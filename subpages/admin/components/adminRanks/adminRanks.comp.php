@@ -25,7 +25,7 @@
                 <thead>
                     <tr class="text-center align-middle">
                         <th>Rank</th>
-                        <th style="width: 30%">Hodnota</th>
+                        <th style="width: 25%">Hodnota</th>
                         <th style="width: 30%">Operácie</th>
                     </tr>
                 </thead>
@@ -41,7 +41,7 @@
                                 <tr class="text-center align-middle text-outline" style="font-size: 16px">
                                     <th scope="row">' . $row['name'] . '<input type="hidden" name="rank-selected" value="' . $row['id'] . '"></input></th>
                                     <td>
-                                        <input class="form-control" name="rank-value" value="' . $row['rank'] . '"></input>
+                                        <input class="form-control" type="number" min="0" max="100000" name="rank-value" value="' . $row['rank'] . '"></input>
                                     </td>
                                     <td>
                                         <div class="row justify-content-center">
