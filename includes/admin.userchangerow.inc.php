@@ -14,11 +14,17 @@ if (isset($_POST['form-submit'])) {
     $userNewRankId = $_POST['rank-selected'];
     $userId = $_POST['user-selected'];
 
-    $sql = "UPDATE users SET rankId=? WHERE id=?";
+    $sql = "SELECT rank FROM ranks WHERE id=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $userNewRankId, $userId);
+    $stmt->bind_param("i", $userNewRankId);
     $stmt->execute();
     $result = $stmt->get_result();
+    $rankValue = mysqli_fetch_assoc($result)['rank'];
+
+    $sql = "UPDATE users SET rankId=?, rankValue=? WHERE id=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iii", $userNewRankId, $rankValue, $userId);
+    $stmt->execute();
 
     $stmt->close();
     $conn->close();

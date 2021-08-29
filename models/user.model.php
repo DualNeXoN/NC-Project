@@ -8,10 +8,10 @@ namespace Models\User {
         private String $username;
         private Rank $rank;
 
-        function __construct(int $id, String $username, int $rankId) {
+        function __construct(int $id, String $username) {
             $this->id = $id;
             $this->setUsername($username);
-            $this->rank = new Rank($rankId);
+            $this->rank = new Rank($id);
         }
 
         public function setUsername(String $username) {
@@ -40,15 +40,16 @@ namespace Models\User {
         public const NO_RANK = "Rank not defined";
         public const TABLE_RANK = "ranks";
 
+        private int $id;
         private String $name;
         private int $rank;
         private int $colorRed = 255;
         private int $colorGreen = 255;
         private int $colorBlue = 255;
 
-        function __construct(int $userRankId) {
+        function __construct(int $userId) {
             if (!$this->existsTable()) $this->initTable();
-            $this->loadRank($userRankId);
+            $this->loadRank($userId);
         }
 
         private function existsTable() {
@@ -73,30 +74,24 @@ namespace Models\User {
             )";
             $conn->query($sql);
 
-            $sql = "INSERT INTO ranks (name, rank, colorRed, colorGreen, colorBlue) VALUES('Hráč', 10000, 255, 255, 255), ('Admin', 100, 29, 132, 171)";
+            $sql = "INSERT INTO ranks (name, rank, colorRed, colorGreen, colorBlue) VALUES('Hráč', 50000, 255, 255, 255), ('Admin', 100, 29, 132, 171)";
             $conn->query($sql);
 
             $conn->close();
         }
 
-        public function loadRank(int $userRankId) {
-            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
-
-            $sql = "SELECT * FROM ranks WHERE id=?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $userRankId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            $stmt->close();
-            $conn->close();
-
-            $row = mysqli_fetch_assoc($result);
+        public function loadRank(int $userId) {
+            $row = UserQueries::getRankRowByUserId($userId);
+            $this->id = $row['id'];
             $this->name = $row['name'];
             $this->rank = $row['rank'];
             $this->colorRed = $row['colorRed'];
             $this->colorGreen = $row['colorGreen'];
             $this->colorBlue = $row['colorBlue'];
+        }
+
+        public function getId() {
+            return $this->id;
         }
 
         public function getName() {
@@ -133,6 +128,56 @@ namespace Models\User {
             } else {
                 return null;
             }
+        }
+
+        public static function getRankRowByUserId(int $userId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $rowOutput = null;
+
+            $sql = "SELECT rankValue FROM users WHERE id=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $userRankValue = mysqli_fetch_assoc($result)['rankValue'];
+            $stmt->close();
+
+            $sql = "SELECT * FROM ranks WHERE rank >= " . $userRankValue . " ORDER BY rank ASC LIMIT 1";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                $rowOutput = $result->fetch_assoc();
+            } else {
+                //correct rankValue for user in table users
+                $sql = "SELECT * FROM ranks ORDER BY rank DESC LIMIT 1";
+                $result = $conn->query($sql);
+                $rowOutput = $result->fetch_assoc();
+                $rankValue = $rowOutput['rank'];
+
+                $sql = "UPDATE users SET rankValue=? WHERE id=?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("ii", $rankValue, $userId);
+                $stmt->execute();
+                $stmt->close();
+            }
+
+            //update rankId for user in table users
+            $sql = "UPDATE users SET rankId=? WHERE id=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ii", $rowOutput['id'], $userId);
+            $stmt->execute();
+            $stmt->close();
+            $conn->close();
+
+            return $rowOutput;
+        }
+
+        public static function getRankIdByUserId(int $userId) {
+            return UserQueries::getRankRowByUserId($userId)['id'];
+        }
+
+        public static function getRankByUserId(int $userId) {
+            return new Rank(UserQueries::getRankIdByUserId($userId));
         }
     }
 }
