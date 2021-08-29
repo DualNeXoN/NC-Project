@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="./subpages/admin/components/adminRanks/adminRanks.comp.css">
+<script src="./js/colorpicker.js"></script>
 
 <div class="container-fluid">
     <div class="row justify-content-center" style="margin-top: 60px">
@@ -11,10 +12,18 @@
             <div class="collapse" id="collapseNewRank">
                 <div class="card card-body bg-dark" style="color: white">
                     <form class="form-new-rank" action="./includes/admin.rankadd.inc.php" method="post">
-                        <input class="form-control" type="text" name="rank-name" placeholder="Názov ranku" required></input>
-                        <input class="form-control" type="number" name="rank-value" placeholder="Hodnota ranku" required></input>
+                        <input class="form-control" type="text" name="new-rank-name" placeholder="Názov ranku" required></input>
+                        <input class="form-control" type="number" name="new-rank-value" placeholder="Hodnota ranku" required></input>
+                        <input class="form-control" id="new-rank-color" name="new-rank-color" value="#ffffff" readonly>
+                        <canvas id="new-rank-color-picker"></canvas>
                         <button class="btn btn-primary" name="form-submit" type="submit">Pridať</button>
                     </form>
+                    <script>
+                        new KellyColorPicker({
+                            place: "new-rank-color-picker",
+                            input: "new-rank-color"
+                        });
+                    </script>
                 </div>
             </div>
         </div>
@@ -26,6 +35,7 @@
                     <tr class="text-center align-middle">
                         <th>Rank</th>
                         <th style="width: 25%">Hodnota</th>
+                        <th style="width: 15%">Farba</th>
                         <th style="width: 30%">Operácie</th>
                     </tr>
                 </thead>
@@ -39,9 +49,16 @@
                             echo '
                             <form action="./includes/admin.rankchangerow.inc.php" method="post">
                                 <tr class="text-center align-middle text-outline" style="font-size: 16px">
-                                    <th scope="row">' . $row['name'] . '<input type="hidden" name="rank-selected" value="' . $row['id'] . '"></input></th>
+                                    <th scope="row">
+                                        <input class="form-control" name="rank-name" type="text" value="' . $row['name'] . '" maxlength="32" required></input>
+                                        <input type="hidden" name="rank-selected" value="' . $row['id'] . '"></input>
+                                    </th>
                                     <td>
                                         <input class="form-control" type="number" min="0" max="100000" name="rank-value" value="' . $row['rank'] . '"></input>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" id="color-id-' . $row['id'] . '" value="' . $row['color'] . '" name="input-color" readonly>
+                                        <canvas id="picker-id-' . $row['id'] . '" style="display:none"></canvas>
                                     </td>
                                     <td>
                                         <div class="row justify-content-center">
@@ -52,6 +69,21 @@
                                     </td>
                                 </tr>
                             </form>
+                            ';
+
+                            echo '
+                            <script>
+                                $("#color-id-' . $row['id'] . '").click(function() {
+                                    let picker = $("#picker-id-' . $row['id'] . '");
+                                    if (picker.is(":visible")) picker.hide();
+                                    else picker.show();
+                                });
+
+                                new KellyColorPicker({
+                                    place: "picker-id-' . $row['id'] . '",
+                                    input: "color-id-' . $row['id'] . '"
+                                });
+                            </script>
                             ';
                         }
                     }

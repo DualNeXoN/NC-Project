@@ -39,7 +39,7 @@ if (isset($_POST['login-submit'])) {
 
         $_SESSION['rankValue'] = $row['rankValue'];
 
-        $_SESSION['user'] = serialize(new User($id, $username, $userRankId));
+        $_SESSION['user'] = serialize(new User($id, $username));
         $toast->addMessage("Prihlásený ako <strong>" . $username . "</strong>", Toast::SEVERITY_SUCCESS);
         $_SESSION['toast'] = serialize($toast);
         header('Location: ./../');

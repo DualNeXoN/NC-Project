@@ -16,7 +16,7 @@
                     <?php
                     require './includes/dbh.inc.php';
                     $sql = "SELECT
-                            users.id AS id, users.username AS username, r.name AS rankname, r.colorRed AS colorRed, r.colorGreen AS colorGreen, r.colorBlue AS colorBlue
+                            users.id AS id, users.username AS username, r.name AS rankname, r.color AS color
                             FROM users
                             INNER JOIN ranks r ON users.rankId = r.id";
                     $result = $conn->query($sql);

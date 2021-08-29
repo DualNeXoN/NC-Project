@@ -12,11 +12,13 @@ if (isset($_POST['form-submit'])) {
     require_once './dbh.inc.php';
 
     $rankId = $_POST['rank-selected'];
+    $rankName = $_POST['rank-name'];
     $rankValue = $_POST['rank-value'];
+    $rankColor = $_POST['input-color'];
 
-    $sql = "UPDATE ranks SET rank=? WHERE id=?";
+    $sql = "UPDATE ranks SET name=?, rank=?, color=? WHERE id=?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $rankValue, $rankId);
+    $stmt->bind_param("sisi", $rankName, $rankValue, $rankColor, $rankId);
     $stmt->execute();
     $result = $stmt->get_result();
 

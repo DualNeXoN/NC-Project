@@ -11,12 +11,13 @@ if (isset($_POST['form-submit'])) {
 
     require_once './dbh.inc.php';
 
-    $rankName = $_POST['rank-name'];
-    $rankValue = $_POST['rank-value'];
+    $rankName = $_POST['new-rank-name'];
+    $rankValue = $_POST['new-rank-value'];
+    $rankColor = $_POST['new-rank-color'];
 
-    $sql = "INSERT INTO ranks (name, rank) VALUES(?, ?)";
+    $sql = "INSERT INTO ranks (name, rank, color) VALUES(?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $rankName, $rankValue);
+    $stmt->bind_param("sis", $rankName, $rankValue, $rankColor);
     $stmt->execute();
     $result = $stmt->get_result();
 
