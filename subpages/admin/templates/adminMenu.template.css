@@ -1,0 +1,7 @@
+.admin-menu-buttons {
+    margin: 50px 0;
+}
+
+.admin-menu-buttons > div > div {
+    margin: 10px 0;
+}

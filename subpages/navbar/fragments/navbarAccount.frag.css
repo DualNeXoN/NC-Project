@@ -1,0 +1,36 @@
+.no-margin {
+    margin: 0;
+    padding: 0;
+}
+
+.nav-rank {
+    margin: auto 0;
+}
+
+.modal-account-button {
+    margin-bottom: 10px;
+}
+
+.modal-account-button .btn {
+    width: 90%;
+}
+
+.modal-account-username {
+    color: white;
+}
+
+.modal-changepwd-button {
+    margin-bottom: 10px;
+}
+
+.modal-changepwd-button .btn {
+    width: 100%;
+}
+
+.modal-changepwd-title {
+    color: white;
+}
+
+.input-group-text {
+    background-color: white;
+}
