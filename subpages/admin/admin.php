@@ -21,8 +21,9 @@ if ($rank <= MIN_PERMS_ADMINISTRATION) {
 
     if (isset($_GET['component'])) {
         $component = $_GET['component'];
-        if (file_exists('./subpages/admin/components/' . $component . '/' . $component . '.comp.php')) {
-            require_once './subpages/admin/components/' . $component . '/' . $component . '.comp.php';
+        $path = $_SERVER['DOCUMENT_ROOT'] . './subpages/admin/components/' . $component . '/' . $component . '.comp.php';
+        if (file_exists($path)) {
+            require_once $path;
         } else {
             $toast->addMessage("Komponent webu sa nenašiel", Toast::SEVERITY_ERROR);
             $_SESSION['toast'] = serialize($toast);
