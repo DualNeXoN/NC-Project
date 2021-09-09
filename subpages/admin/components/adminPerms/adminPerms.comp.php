@@ -9,7 +9,7 @@ require_once './models/perms.model.php';
 require_once './utils/toast.util.php';
 $toast = unserialize($_SESSION['toast']);
 
-if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_USERS_ACCESS)) {
+if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_PERMS_ACCESS)) {
     $toast->addMessage("Neoprávnený prístup", Toast::SEVERITY_ERROR);
     $_SESSION['toast'] = serialize($toast);
 
@@ -19,7 +19,7 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_USERS_ACCESS)) {
 
 ?>
 
-<link rel="stylesheet" href="./subpages/admin/components/adminUsers/adminUsers.comp.css">
+<link rel="stylesheet" href="./subpages/admin/components/adminPerms/adminPerms.comp.css">
 
 <div class="container-fluid" style="margin-top: 60px">
     <div class="row justify-content-center">
@@ -27,8 +27,7 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_USERS_ACCESS)) {
             <table class="table table-dark table-striped table-sm">
                 <thead>
                     <tr class="text-center align-middle">
-                        <th style="width: 15%">ID</th>
-                        <th>Username</th>
+                        <th>Právo</th>
                         <th style="width: 15%">Rank</th>
                         <th style="width: 38%">Operácie</th>
                     </tr>
@@ -37,17 +36,16 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_USERS_ACCESS)) {
                     <?php
                     require './includes/dbh.inc.php';
                     $sql = "SELECT
-                            users.id AS id, users.username AS username, r.name AS rankname, r.color AS color
-                            FROM users
-                            INNER JOIN ranks r ON users.rankId = r.id";
+                            perms.keyName AS keyName, perms.rankId AS rankId, r.name AS rankname
+                            FROM perms
+                            INNER JOIN ranks r ON perms.rankId = r.id";
                     $result = $conn->query($sql);
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo '
-                            <form action="./includes/admin.userchangerow.inc.php" method="post">
+                            <form action="./includes/admin.permchangerow.inc.php" method="post">
                                 <tr class="text-center align-middle text-outline" style="font-size: 16px">
-                                    <th scope="row">' . $row['id'] . '<input type="hidden" name="user-selected" value="' . $row['id'] . '"></input></th>
-                                    <td>' . $row['username'] . '</td>
+                                    <th scope="row">' . $row['keyName'] . '<input type="hidden" name="perm-selected" value="' . $row['keyName'] . '"></input></th>
                                     <td class="text-no-outline">
                                         <select class="form-select" name="rank-selected">
                             ';

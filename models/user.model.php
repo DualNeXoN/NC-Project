@@ -37,6 +37,7 @@ namespace Models\User {
 
     class Rank {
 
+        public const DEFAULT_MIN_VALUE = 50000;
         public const NO_RANK = "Rank not defined";
         public const TABLE_RANK = "ranks";
 
@@ -75,7 +76,7 @@ namespace Models\User {
             $stmt->execute();
             $stmt->close();
 
-            $sql = "INSERT INTO ranks (name, rank) VALUES('Hráč', 50000), ('Admin', 0)";
+            $sql = "INSERT INTO ranks (name, rank) VALUES('Hráč', " . Rank::DEFAULT_MIN_VALUE . "), ('Admin', 0)";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             $stmt->close();
