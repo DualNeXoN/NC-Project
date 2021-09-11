@@ -6,6 +6,7 @@ require_once './subpages/navbar/navbar.php';
 use Utils\Toast\ToastHandler as Toast;
 
 require_once './utils/toast.util.php';
+require_once './utils/activity.util.php';
 
 if (isset($_GET['subpage'])) {
 

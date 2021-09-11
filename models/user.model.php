@@ -4,6 +4,9 @@ namespace Models\User {
 
     class User {
 
+        public const ONLINE_SECONDS = 0;
+        public const ONLINE_MINUTES = 3;
+
         private int $id;
         private String $username;
         private Rank $rank;
@@ -32,6 +35,10 @@ namespace Models\User {
 
         public function getRank() {
             return $this->rank;
+        }
+
+        public function isOnline() {
+            return UserQueries::isOnline($this->id);
         }
     }
 
@@ -217,6 +224,37 @@ namespace Models\User {
             $stmt->bind_param("iii", $rowRank['id'], $rowRank['rank'], $userId);
             $stmt->execute();
             $stmt->close();
+        }
+
+        public static function getLastActivityTime(int $userId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $sql = "SELECT lastActivityWeb FROM users WHERE id=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if (mysqli_num_rows($result) == 0) return null;
+            $stmt->close();
+            $conn->close();
+            return mysqli_fetch_assoc($result)['lastActivityWeb'];
+        }
+
+        public static function updateLastActivityTime(int $userId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $sql = "UPDATE users SET lastActivityWeb=CURRENT_TIMESTAMP WHERE id=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $stmt->close();
+            $conn->close();
+        }
+
+        public static function isOnline(int $userId) {
+            $lastActivity = strtotime(UserQueries::getLastActivityTime($userId));
+            $currentTime = time();
+            return (($currentTime - $lastActivity) < (User::ONLINE_SECONDS + User::ONLINE_MINUTES * 60));
         }
     }
 }
