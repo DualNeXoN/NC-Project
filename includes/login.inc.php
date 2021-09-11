@@ -23,10 +23,14 @@ if (isset($_POST['login-submit'])) {
     $result = $stmt->get_result();
 
     $stmt->close();
-    $conn->close();
 
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
+        $sql = "UPDATE users SET lastLoginWeb=CURRENT_TIMESTAMP WHERE id=" . $row['id'];
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $stmt->close();
+        $conn->close();
 
         $username = $row['username'];
         $_SESSION['username'] = $username;
@@ -39,12 +43,14 @@ if (isset($_POST['login-submit'])) {
 
         $_SESSION['rankValue'] = $row['rankValue'];
 
-        $_SESSION['user'] = serialize(new User($id, $username));
+        $userClass = new User($id, $username);
+        $_SESSION['user'] = serialize($userClass);
         $toast->addMessage("Prihlásený ako <strong>" . $username . "</strong>", Toast::SEVERITY_SUCCESS);
         $_SESSION['toast'] = serialize($toast);
         header('Location: ./../');
         exit();
     } else {
+        $conn->close();
         $toast->addMessage("Nesprávne prihlasovacie údaje", Toast::SEVERITY_ERROR);
         $_SESSION['toast'] = serialize($toast);
         header('Location: ./../');
