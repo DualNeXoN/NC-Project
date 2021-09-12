@@ -33,18 +33,23 @@ namespace Models\User {
             return (isset($this->rank) ? $this->rank->getName() : Rank::NO_RANK);
         }
 
+        public function getRankColor() {
+            return (isset($this->rank) ? $this->rank->getColor() : Rank::DEFAULT_COLOR);
+        }
+
         public function getRank() {
             return $this->rank;
         }
 
-        public function isOnline() {
-            return UserQueries::isOnline($this->id);
+        public function isOnlineOnWeb() {
+            return UserQueries::isOnlineOnWeb($this->id);
         }
     }
 
     class Rank {
 
         public const DEFAULT_MIN_VALUE = 50000;
+        public const DEFAULT_COLOR = "#ffffff";
         public const NO_RANK = "Rank not defined";
         public const TABLE_RANK = "ranks";
 
@@ -251,7 +256,7 @@ namespace Models\User {
             $conn->close();
         }
 
-        public static function isOnline(int $userId) {
+        public static function isOnlineOnWeb(int $userId) {
             $lastActivity = strtotime(UserQueries::getLastActivityTime($userId));
             $currentTime = time();
             return (($currentTime - $lastActivity) < (User::ONLINE_SECONDS + User::ONLINE_MINUTES * 60));

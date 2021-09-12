@@ -1,0 +1,25 @@
+table {
+    border: 2px solid white;
+    background-color: #262626;
+}
+
+thead {
+    font-size: 18px;
+    font-weight: bold;
+    background-color: rgb(71, 71, 71);
+}
+
+th {
+    color: white;
+}
+
+tbody th:hover {
+    cursor: pointer;
+    background-color: black;
+    animation: tablehover 0.5s;
+}
+
+@keyframes tablehover {
+    from {background-color: #262626;}
+    to {background-color: black;}
+}
