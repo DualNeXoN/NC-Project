@@ -10,7 +10,7 @@ $user = unserialize($_SESSION['user']);
 <span class="navbar-text nav-rank" style="margin: auto 2px"><strong>&#9679;</strong></span>
 <span class="navbar-text nav-rank text-outline" style="color: <?php echo $user->getRank()->getColor() ?>"><strong><?php echo $user->getRankName() ?></strong></span>
 <button class="btn no-margin" data-bs-toggle="modal" data-bs-target="#accountModal">
-    <img class="nav-link" src="http://cravatar.eu/avatar/<?php echo $user->getUsername() ?>/40.png" id="navbarAccount" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false" />
+    <img class="nav-link" src="http://cravatar.eu/avatar/<?php echo $user->getUsername() ?>/40.png" onerror="this.src='./../../images/avatar_default.png'" id="navbarAccount" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false" />
 </button>
 
 <div class="modal fade" id="accountModal" tabindex="-1" aria-hidden="true">
