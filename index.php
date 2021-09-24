@@ -30,11 +30,3 @@ require_once './subpages/footer/footer.php';
 $toast = unserialize($_SESSION['toast']);
 $toast->process();
 $_SESSION['toast'] = serialize($toast);
-
-?>
-
-<script>
-    $(document).ready(function() {
-        $(".toast").toast("show");
-    });
-</script>

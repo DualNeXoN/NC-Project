@@ -28,6 +28,9 @@ session_start();
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
+  <!-- Main JS -->
+  <script src="./js/toast.js"></script>
+
   <!-- Particles - firespark -->
   <link rel="stylesheet" href="css/particles.firespark.css">
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
