@@ -4,7 +4,7 @@ require_once './models/user.model.php';
 $user = unserialize($_SESSION['user']);
 ?>
 
-<link rel="stylesheet" href="./subpages/navbar/fragments/navbarAccount.frag.css">
+<link rel="stylesheet" href="./subpages/navbar/fragments/navbarAccount/navbarAccount.frag.css">
 
 <div class="d-flex">
 

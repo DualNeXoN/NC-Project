@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="./subpages/navbar/fragments/navbarLogin.frag.css">
+<link rel="stylesheet" href="./subpages/navbar/fragments/navbarLogin/navbarLogin.frag.css">
 
 <div class="d-flex">
 
