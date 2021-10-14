@@ -37,9 +37,10 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_USERS_ACCESS)) {
                 <tbody>
                     <?php
                     require './includes/dbh.inc.php';
-                    $sql = "SELECT users.id AS id, users.username AS username, r.name AS rankname, r.color AS color
+                    $sql = "SELECT users.id AS id, users.username AS username, r.name AS rankname, r.color AS color, r.rank AS rankvalue
                             FROM users
-                            INNER JOIN ranks r ON users.rankId = r.id";
+                            INNER JOIN ranks r ON users.rankId = r.id
+                            ORDER BY rankvalue, username ASC";
                     $result = $conn->query($sql);
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
@@ -48,9 +49,8 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_USERS_ACCESS)) {
                             <form action="./includes/admin.userchangerow.inc.php" method="post">
                                 <tr class="text-center align-middle text-outline" style="font-size: 16px">
                                     <input type="hidden" name="user-selected" value="' . $row['id'] . '"></input>
-                                    <td>' . $row['username'] . '</td>
+                                    ' . ($row['id'] == $_SESSION['id'] ? '<td style="font-weight: bold">&#9679; ' . $row['username'] . ' &#9679;</td>' : '<td>' . $row['username'] . '</td>') . '
                                     <td class="text-no-outline">
-                                        
                             ';
 
                             $noPermsForThisUserEdit = UserQueries::isUserLowerRankThanTargetUser($_SESSION['id'], $row['id']);
