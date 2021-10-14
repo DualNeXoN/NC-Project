@@ -7,7 +7,7 @@ use Utils\Toast\ToastHandler as Toast;
 require './../utils/toast.util.php';
 $toast = unserialize($_SESSION['toast']);
 
-if (isset($_POST['form-submit'])) {
+if (isset($_POST['form-submit-save'])) {
 
     require_once './dbh.inc.php';
 
@@ -30,7 +30,31 @@ if (isset($_POST['form-submit'])) {
 
     header('Location: ./../?subpage=admin&component=adminranks');
     exit();
+} else if (isset($_POST['form-submit-delete'])) {
+
+    require_once './dbh.inc.php';
+
+    $rankId = $_POST['rank-selected'];
+    $sql = "DELETE FROM ranks WHERE id=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $rankId);
+    $stmt->execute();
+
+    $sql = "UPDATE users SET rankId=DEFAULT(rankId) WHERE rankId=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $rankId);
+    $stmt->execute();
+
+    $stmt->close();
+    $conn->close();
+
+    $toast->addMessage("Odstránenie ranku úspešné", Toast::SEVERITY_SUCCESS);
+    $_SESSION['toast'] = serialize($toast);
+
+    header('Location: ./../?subpage=admin&component=adminranks');
+    exit();
 } else {
+
     $toast->addMessage("Neoprávnený prístup", Toast::SEVERITY_ERROR);
     $_SESSION['toast'] = serialize($toast);
     header('Location: ./../');

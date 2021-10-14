@@ -59,7 +59,10 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_RANKS_ACCESS)) {
                                     <td>
                                         <div class="row justify-content-center">
                                             <div class="col-md-12 col-xl-6">
-                                                <button class="btn btn-primary" name="form-submit" type="submit">Uložiť</button>
+                                                <button class="btn btn-primary" name="form-submit-save" type="submit">Uložiť</button>
+                                            </div>
+                                            <div class="col-md-12 col-xl-6">
+                                                <button class="btn btn-danger" name="form-submit-delete" type="submit">Zmazať</button>
                                             </div>
                                         </div>
                                     </td>
