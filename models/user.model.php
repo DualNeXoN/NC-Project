@@ -182,12 +182,81 @@ namespace Models\User {
             return mysqli_fetch_assoc($result);
         }
 
+        public static function getRankRowByRankId(int $rankId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $sql = "SELECT * FROM ranks WHERE id=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $rankId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stmt->close();
+
+            $conn->close();
+
+            return mysqli_fetch_assoc($result);
+        }
+
         public static function getRankIdByUserId(int $userId) {
             return UserQueries::getRankRowByUserId($userId)['id'];
         }
 
         public static function getRankByUserId(int $userId) {
             return new Rank(UserQueries::getRankIdByUserId($userId));
+        }
+
+        public static function isUserHigherRankThanTargetUser(int $currentUserId, int $targetUserId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $currentUserRank = UserQueries::getRankRowByUserId($currentUserId);
+            $targetUserRank = UserQueries::getRankRowByUserId($targetUserId);
+
+            return $currentUserRank['rank'] < $targetUserRank['rank'];
+        }
+
+        public static function isUserLowerRankThanTargetUser(int $currentUserId, int $targetUserId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $currentUserRank = UserQueries::getRankRowByUserId($currentUserId);
+            $targetUserRank = UserQueries::getRankRowByUserId($targetUserId);
+
+            return $currentUserRank['rank'] > $targetUserRank['rank'];
+        }
+
+        public static function isUserEqualRankThanTargetUser(int $currentUserId, int $targetUserId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $currentUserRank = UserQueries::getRankRowByUserId($currentUserId);
+            $targetUserRank = UserQueries::getRankRowByUserId($targetUserId);
+
+            return $currentUserRank['rank'] == $targetUserRank['rank'];
+        }
+
+        public static function isUserHigherRankThanTargetRank(int $currentUserId, int $targetRankId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $currentUserRank = UserQueries::getRankRowByUserId($currentUserId);
+            $targetUserRank = UserQueries::getRankRowByRankId($targetRankId);
+
+            return $currentUserRank['rank'] < $targetUserRank['rank'];
+        }
+
+        public static function isUserLowerRankThanTargetRank(int $currentUserId, int $targetRankId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $currentUserRank = UserQueries::getRankRowByUserId($currentUserId);
+            $targetUserRank = UserQueries::getRankRowByRankId($targetRankId);
+
+            return $currentUserRank['rank'] > $targetUserRank['rank'];
+        }
+
+        public static function isUserEqualRankThanTargetRank(int $currentUserId, int $targetRankId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $currentUserRank = UserQueries::getRankRowByUserId($currentUserId);
+            $targetUserRank = UserQueries::getRankRowByRankId($targetRankId);
+
+            return $currentUserRank['rank'] == $targetUserRank['rank'];
         }
 
         public static function correctRankIdForUser(int $userId) {

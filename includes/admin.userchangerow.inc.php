@@ -7,12 +7,33 @@ use Utils\Toast\ToastHandler as Toast;
 require './../utils/toast.util.php';
 $toast = unserialize($_SESSION['toast']);
 
+use Models\User\UserQueries as UserQuery;
+
+require './../models/user.model.php';
+
 if (isset($_POST['form-submit'])) {
 
-    require_once './dbh.inc.php';
+    $userId = $_POST['user-selected'];
+
+    if (UserQuery::isUserLowerRankThanTargetUser($_SESSION['id'], $userId)) {
+        $toast->addMessage("Nemáš právo na zmenu ranku pre hráča vyššieho postavenia", Toast::SEVERITY_ERROR);
+        $_SESSION['toast'] = serialize($toast);
+
+        header('Location: ./../?subpage=admin&component=adminusers');
+        exit();
+    }
 
     $userNewRankId = $_POST['rank-selected'];
-    $userId = $_POST['user-selected'];
+
+    if (UserQuery::isUserLowerRankThanTargetRank($_SESSION['id'], $userNewRankId)) {
+        $toast->addMessage("Nemáš právo zmeniť rank na vyšší, než si ty", Toast::SEVERITY_ERROR);
+        $_SESSION['toast'] = serialize($toast);
+
+        header('Location: ./../?subpage=admin&component=adminusers');
+        exit();
+    }
+
+    require './dbh.inc.php';
 
     $sql = "SELECT rank FROM ranks WHERE id=?";
     $stmt = $conn->prepare($sql);
