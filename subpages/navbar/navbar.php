@@ -14,17 +14,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="./?subpage=players">Hráči</a>
                 </li>
-                <?php require_once 'fragments/navbarAdmin.frag.php' ?>
+                <?php require_once 'fragments/navbarTickets/navbarTickets.frag.php' ?>
+                <?php require_once 'fragments/navbarAdmin/navbarAdmin.frag.php' ?>
             </ul>
-            <div class="d-flex">
-                <?php
-                if (isset($_SESSION['user'])) {
-                    require 'fragments/navbarAccount.frag.php';
-                } else if ((isset($_GET['subpage']) && $_GET['subpage'] != "login") || !isset($_GET['subpage'])) {
-                    require 'fragments/navbarLogin.frag.php';
-                }
-                ?>
-            </div>
+            <?php
+            if (isset($_SESSION['user'])) {
+                require 'fragments/navbarAccount/navbarAccount.frag.php';
+            } else if ((isset($_GET['subpage']) && $_GET['subpage'] != "login") || !isset($_GET['subpage'])) {
+                require 'fragments/navbarLogin/navbarLogin.frag.php';
+            }
+            ?>
         </div>
     </div>
 </nav>
