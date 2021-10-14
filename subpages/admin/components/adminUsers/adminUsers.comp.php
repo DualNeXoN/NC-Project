@@ -29,8 +29,9 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_USERS_ACCESS)) {
                 <thead>
                     <tr class="text-center align-middle">
                         <th>Username</th>
-                        <th style="width: 25%">Rank</th>
-                        <th style="width: 25%">Operácie</th>
+                        <th>Rank</th>
+                        <th width="20%">Heslo</th>
+                        <th>Operácie</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,6 +43,7 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_USERS_ACCESS)) {
                     $result = $conn->query($sql);
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
+
                             echo '
                             <form action="./includes/admin.userchangerow.inc.php" method="post">
                                 <tr class="text-center align-middle text-outline" style="font-size: 16px">
@@ -50,7 +52,9 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_USERS_ACCESS)) {
                                     <td class="text-no-outline">
                                         
                             ';
+
                             $noPermsForThisUserEdit = UserQueries::isUserLowerRankThanTargetUser($_SESSION['id'], $row['id']);
+
                             if ($noPermsForThisUserEdit) {
                                 echo '<span class="text-outline" style="color: ' . $row['color'] . '"><strong>' . $row['rankname'] . '</strong></span>';
                             } else {
@@ -66,6 +70,12 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_USERS_ACCESS)) {
                                 </td>
                                 ';
                             }
+
+                            echo '
+                            <td>
+                            <input class="form-control" type="password" name="pwd" placeholder="Nové heslo" ' . ($noPermsForThisUserEdit ? 'disabled' : '') . '></input>
+                            </td>';
+
                             echo '
                             <td>
                                 <div class="row justify-content-center">
@@ -74,6 +84,7 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_USERS_ACCESS)) {
                                     </div>
                                 </div>
                             </td>';
+
                             echo '
                             </tr>
                             </form>

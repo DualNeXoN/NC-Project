@@ -16,7 +16,7 @@ if (isset($_POST['form-submit'])) {
     $userId = $_POST['user-selected'];
 
     if (UserQuery::isUserLowerRankThanTargetUser($_SESSION['id'], $userId)) {
-        $toast->addMessage("Nemáš právo na zmenu ranku pre hráča vyššieho postavenia", Toast::SEVERITY_ERROR);
+        $toast->addMessage("Nemáš právo na editáciu hráča vyššieho postavenia", Toast::SEVERITY_ERROR);
         $_SESSION['toast'] = serialize($toast);
 
         header('Location: ./../?subpage=admin&component=adminusers');
@@ -26,12 +26,14 @@ if (isset($_POST['form-submit'])) {
     $userNewRankId = $_POST['rank-selected'];
 
     if (UserQuery::isUserLowerRankThanTargetRank($_SESSION['id'], $userNewRankId)) {
-        $toast->addMessage("Nemáš právo zmeniť rank na vyšší, než si ty", Toast::SEVERITY_ERROR);
+        $toast->addMessage("Nemáš právo zmeniť rank na vyšší ako ty", Toast::SEVERITY_ERROR);
         $_SESSION['toast'] = serialize($toast);
 
         header('Location: ./../?subpage=admin&component=adminusers');
         exit();
     }
+
+    $userPwd = $_POST['pwd'];
 
     require './dbh.inc.php';
 
@@ -46,6 +48,13 @@ if (isset($_POST['form-submit'])) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("iii", $userNewRankId, $rankValue, $userId);
     $stmt->execute();
+
+    if (strlen($userPwd) > 0) {
+        $sql = "UPDATE users SET pwd=SHA2(?, 512) WHERE id=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $userPwd, $userId);
+        $stmt->execute();
+    }
 
     $stmt->close();
     $conn->close();
