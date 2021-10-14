@@ -59,54 +59,7 @@ namespace Models\User {
         private String $color = "#ffffff";
 
         function __construct(int $userId) {
-            if (!$this->existsTable()) $this->initTable();
             $this->loadRank($userId);
-        }
-
-        public static function existsTable() {
-            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
-
-            $sql = "SHOW TABLES LIKE '" . RANK::TABLE_RANK . "'";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $stmt->close();
-            $conn->close();
-            return (mysqli_num_rows($result) > 0);
-        }
-
-        public static function initTable() {
-            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
-
-            $sql = "CREATE TABLE " . RANK::TABLE_RANK . " (
-                id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(32) NOT NULL,
-                rank INT(11) NOT NULL,
-                color VARCHAR(7) NOT NULL DEFAULT '#ffffff'
-            )";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $stmt->close();
-
-            $sql = "INSERT INTO ranks (name, rank) VALUES('Hráč', " . Rank::DEFAULT_MIN_VALUE . "), ('Admin', 0)";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $stmt->close();
-
-            //correct all rank ids for users
-            $sql = "SELECT id FROM users";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $stmt->close();
-
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    UserQueries::correctRankIdForUser($row['id']);
-                }
-            }
-
-            $conn->close();
         }
 
         public function loadRank(int $userId) {

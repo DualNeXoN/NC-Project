@@ -96,7 +96,7 @@ namespace Models\Perms {
 
             $sql = "CREATE TABLE `" . PermsHandler::TABLE_PERMS . "` (
                 `keyName` VARCHAR(64) NOT NULL, PRIMARY KEY (`keyName`(64)),
-                `rankId` INT(11) NOT NULL DEFAULT '2'
+                `rankId` INT(11) NOT NULL DEFAULT '1'
             )";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
