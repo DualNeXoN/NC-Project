@@ -33,9 +33,9 @@
             </div>
             ';
 
-            if (PermsHandler::hasPerms(PermsConstants::ADMINPANEL_TICKETS_ACCESS)) echo '
+            if (PermsHandler::hasPerms(PermsConstants::ADMINPANEL_TICKET_ACCESS)) echo '
             <div class="col">
-                <a class="btn btn-primary full-width" href="">Tickety</a>
+                <a class="btn btn-primary full-width" href="./?subpage=admin&component=adminTickets">Tickety</a>
             </div>
             ';
 

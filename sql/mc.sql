@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `mc`.`tickets` (
   `ticketIssueId` INT NOT NULL,
   `userId` INT NOT NULL,
   `assigneeId` INT NULL,
+  `title` VARCHAR(60) NOT NULL,
   `createTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_tickets_ticket_issues_idx` (`ticketIssueId` ASC),

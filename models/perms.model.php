@@ -5,6 +5,8 @@ namespace Models\Perms {
     use Models\User\Rank as Rank;
     use Models\Perms\PermsConstants as PCo;
     use Models\Perms\PermsQueries as Queries;
+    use Models\User\User;
+    use Models\User\UserQueries;
 
     require_once './models/user.model.php';
 
@@ -40,6 +42,30 @@ namespace Models\Perms {
     }
 
     class PermsQueries {
+
+        public static function getAllUsersHavingExactPerm(String $key) {
+            require './includes/dbh.inc.php';
+
+            $rankId = PermsQueries::getCurrentRankIdOfKey($key);
+            $rankRow = UserQueries::getRankRowByRankId($rankId);
+
+            $sql = "SELECT * FROM users WHERE rankValue<=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $rankRow['rank']);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stmt->close();
+            $conn->close();
+
+            $userArray = [];
+            if (mysqli_num_rows($result) > 0) {
+                while ($userRow = mysqli_fetch_assoc($result)) {
+                    array_push($userArray, new User($userRow['id']));
+                }
+            }
+
+            return $userArray;
+        }
 
         public static function getCurrentRankIdOfKey(String $key) {
             require './includes/dbh.inc.php';
@@ -141,7 +167,9 @@ namespace Models\Perms {
         const ADMINPANEL_RANKS_ACCESS = "adminpanel.ranks.access";
         const ADMINPANEL_RANKS_ADD = "adminpanel.ranks.add";
         const ADMINPANEL_SERVER_ACCESS = "adminpanel.server.access";
-        const ADMINPANEL_TICKETS_ACCESS = "adminpanel.ticket.access";
+        const ADMINPANEL_TICKET_ACCESS = "adminpanel.ticket.access";
+        const ADMINPANEL_TICKET_OPEN_ANY = "adminpanel.ticket.open.any";
+        const ADMINPANEL_TICKET_ASSIGNEE_CHANGE = "adminpanel.ticket.assignee.change";
         const ADMINPANEL_PERMS_ACCESS = "adminpanel.perms.access";
 
         public static $map = array();
@@ -154,7 +182,9 @@ namespace Models\Perms {
             PCo::registerPermission(PCo::ADMINPANEL_RANKS_ACCESS);
             PCo::registerPermission(PCo::ADMINPANEL_RANKS_ADD);
             PCo::registerPermission(PCo::ADMINPANEL_SERVER_ACCESS);
-            PCo::registerPermission(PCo::ADMINPANEL_TICKETS_ACCESS);
+            PCo::registerPermission(PCo::ADMINPANEL_TICKET_ACCESS);
+            PCo::registerPermission(PCo::ADMINPANEL_TICKET_OPEN_ANY);
+            PCo::registerPermission(PCo::ADMINPANEL_TICKET_ASSIGNEE_CHANGE);
             PCo::registerPermission(PCo::ADMINPANEL_PERMS_ACCESS);
         }
 

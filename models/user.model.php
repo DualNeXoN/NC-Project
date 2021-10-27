@@ -11,8 +11,9 @@ namespace Models\User {
         private String $username;
         private Rank $rank;
 
-        function __construct(int $id, String $username) {
+        function __construct(int $id, String $username = null) {
             $this->id = $id;
+            if ($username == null) $username = UserQueries::getUsernameById($id);
             $this->setUsername($username);
             $this->rank = new Rank($id);
         }
@@ -43,6 +44,19 @@ namespace Models\User {
 
         public function isOnlineOnWeb() {
             return UserQueries::isOnlineOnWeb($this->id);
+        }
+
+        public function getUserLink() {
+            $rootUrl = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
+            return $rootUrl . '?subpage=players&player=' . $this->username;
+        }
+
+        public function getAvatarLink(int $size = 40) {
+            return 'https://cravatar.eu/avatar/' . $this->username . '/' . $size . '.png';
+        }
+
+        public function getUsernameFormatted() {
+            return '<span style="color: ' . $this->getRank()->getColor() . '">' . $this->rank->getName() . '</span> &#9679; <span>' . $this->username . '</span>';
         }
     }
 
@@ -88,6 +102,36 @@ namespace Models\User {
     }
 
     class UserQueries {
+
+        public static function getUserById(int $userId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $sql = "SELECT * FROM users WHERE id=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $stmt->close();
+            $conn->close();
+
+            return $result;
+        }
+
+        public static function getUsernameById(int $userId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $sql = "SELECT username FROM users WHERE id=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $stmt->close();
+            $conn->close();
+
+            return mysqli_fetch_assoc($result)['username'];
+        }
 
         public static function getPassword(User $user) {
             require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
