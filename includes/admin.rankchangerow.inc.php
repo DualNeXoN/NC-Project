@@ -20,9 +20,14 @@ if (isset($_POST['form-submit-save'])) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sisi", $rankName, $rankValue, $rankColor, $rankId);
     $stmt->execute();
-    $result = $stmt->get_result();
-
     $stmt->close();
+
+    $sql = "UPDATE users SET rankId=?, rankValue=? WHERE rankId=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iii", $rankId, $rankValue, $rankId);
+    $stmt->execute();
+    $stmt->close();
+
     $conn->close();
 
     $toast->addMessage("Aktualizácia ranku úspešná", Toast::SEVERITY_SUCCESS);
@@ -35,17 +40,19 @@ if (isset($_POST['form-submit-save'])) {
     require_once './dbh.inc.php';
 
     $rankId = $_POST['rank-selected'];
+
+    $sql = "UPDATE users SET rankId=DEFAULT(rankId), rankValue=DEFAULT(rankValue) WHERE rankId=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $rankId);
+    $stmt->execute();
+    $stmt->close();
+
     $sql = "DELETE FROM ranks WHERE id=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $rankId);
     $stmt->execute();
-
-    $sql = "UPDATE users SET rankId=DEFAULT(rankId) WHERE rankId=?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $rankId);
-    $stmt->execute();
-
     $stmt->close();
+
     $conn->close();
 
     $toast->addMessage("Odstránenie ranku úspešné", Toast::SEVERITY_SUCCESS);

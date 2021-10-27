@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `mc`.`users` (
   `username` VARCHAR(20) NOT NULL,
   `pwd` VARCHAR(128) NOT NULL,
   `rankValue` INT NOT NULL DEFAULT 50000,
-  `rankId` INT NOT NULL,
+  `rankId` INT NOT NULL DEFAULT 2,
   `registrationDate` DATETIME NOT NULL DEFAULT current_timestamp(),
   `lastLoginWeb` DATETIME NULL,
   `lastActivityWeb` DATETIME NULL,

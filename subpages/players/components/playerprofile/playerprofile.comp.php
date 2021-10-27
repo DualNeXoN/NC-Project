@@ -34,52 +34,54 @@
         $row = mysqli_fetch_assoc($result);
         $onlineWeb = Queries::isOnlineOnWeb($row['id']);
         $userClassTmp = new User($row['id'], $row['username']);
-        echo '
+    ?>
         <div class="row">
             <div class="col text-center align-self-center">
-                <span class="text-outline" style="color: ' . $userClassTmp->getRankColor() . '">' . $userClassTmp->getRankName() . '</span>
+                <span class="text-outline" style="color: <?= $userClassTmp->getRankColor() ?>"><?= $userClassTmp->getRankName() ?></span>
             </div>
         </div>
         <div class="row">
             <div class="col text-center align-self-center">
-                <span class="text-outline">Registrácia: ' . $row['registrationDate'] . '</span>
+                <span class="text-outline">Registrácia: <?= $row['registrationDate'] ?></span>
             </div>
         </div>
         <div class="row">
             <div class="col text-center align-self-center">
                 <span class="text-outline">Status na serveri: </span>
-                <span class="text-outline" style="color: ' . ($row['onlineServer'] ? "lightgreen" : "red") . '">' . ($row['onlineServer'] ? "Online" : "Offline") . '</span>
+                <span class="text-outline" style="color: <?= ($row['onlineServer'] ? "lightgreen" : "red") ?>"><?= ($row['onlineServer'] ? "Online" : "Offline") ?></span>
             </div>
         </div>
         <div class="row">
             <div class="col text-center align-self-center">
                 <span class="text-outline">Status na webe: </span>
-                <span class="text-outline" style="color: ' . ($onlineWeb ? "lightgreen" : "red") . '">' . ($onlineWeb ? "Online" : "Offline") . '</span>
+                <span class="text-outline" style="color: <?= ($onlineWeb ? "lightgreen" : "red") ?>"><?= ($onlineWeb ? "Online" : "Offline") ?></span>
             </div>
         </div>
         <div class="row">
             <div class="col text-center align-self-center">
-                <span class="text-outline">Posledné prihlásenie na webe: ' . ($row['lastLoginWeb'] != null ? $row['lastLoginWeb'] : "Nikdy") . '</span>
+                <span class="text-outline">Posledné prihlásenie na webe: <?= ($row['lastLoginWeb'] != null ? $row['lastLoginWeb'] : "Nikdy") ?></span>
             </div>
         </div>
         <div class="row">
             <div class="col text-center align-self-center">
-                <span class="text-outline">Posledné prihlásenie na serveri: ' . ($row['lastLoginServer'] != null ? $row['lastLoginServer'] : "Nikdy") . '</span>
+                <span class="text-outline">Posledné prihlásenie na serveri: <?= ($row['lastLoginServer'] != null ? $row['lastLoginServer'] : "Nikdy") ?></span>
             </div>
         </div>
         <div class="row">
             <div class="col text-center align-self-center">
-                <span class="text-outline">Playtime: ' . $row['playtime'] . '</span>
+                <span class="text-outline">Playtime: <?= $row['playtime'] ?></span>
             </div>
         </div>
-        ';
-        if ($row['isBanned']) echo '
-        <div class="row">
-            <div class="col text-center align-self-center">
-                <span class="text-outline" style="color: red">Zabanovaný</span>
+        <?php
+        if ($row['isBanned']) {
+        ?>
+            <div class="row">
+                <div class="col text-center align-self-center">
+                    <span class="text-outline" style="color: red">Zabanovaný</span>
+                </div>
             </div>
-        </div>
-        ';
+    <?php
+        }
     } else {
         $toast = unserialize($_SESSION['toast']);
         $toast->addMessage("Hráč sa nenašiel", ToastHandler::SEVERITY_ERROR);

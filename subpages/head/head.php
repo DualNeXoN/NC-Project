@@ -51,5 +51,5 @@ session_start();
 
 </head>
 
-<body class="body-wallpaper">
+<body class="body body-wallpaper">
   <div id="particles-firespark"></div>
