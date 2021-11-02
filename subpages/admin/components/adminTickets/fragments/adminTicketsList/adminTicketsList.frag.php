@@ -97,7 +97,7 @@ function assignSelf(int $ticketId) {
 <?php
 }
 
-function changeAssignedUser(int $ticketId, array $options, mixed $currentAssignee, bool $ticketIsClosed) {
+function changeAssignedUser(int $ticketId, array $options, $currentAssignee, bool $ticketIsClosed) {
 ?>
     <div class="col">
         <a type="button" id="btn-collapse-change-assignee-<?= $ticketId ?>" class="btn btn-primary full-w-h button-change-assignee full-w-h" data-bs-toggle="collapse" data-bs-target="#collapseChangeAssignee-<?= $ticketId ?>" aria-expanded="false" aria-controls="collapseChangeAssignee-<?= $ticketId ?>">Zmeniť riešiteľa</a>
