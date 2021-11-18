@@ -171,6 +171,7 @@ namespace Models\Perms {
         const ADMINPANEL_TICKET_OPEN_ANY = "adminpanel.ticket.open.any";
         const ADMINPANEL_TICKET_ASSIGNEE_CHANGE = "adminpanel.ticket.assignee.change";
         const ADMINPANEL_PERMS_ACCESS = "adminpanel.perms.access";
+        const ANNOUNCEMENTS_ANNOUNCEMENT_ADD = "announcements.announcement.add";
 
         public static $map = array();
 
@@ -186,6 +187,7 @@ namespace Models\Perms {
             PCo::registerPermission(PCo::ADMINPANEL_TICKET_OPEN_ANY);
             PCo::registerPermission(PCo::ADMINPANEL_TICKET_ASSIGNEE_CHANGE);
             PCo::registerPermission(PCo::ADMINPANEL_PERMS_ACCESS);
+            PCo::registerPermission(PCo::ANNOUNCEMENTS_ANNOUNCEMENT_ADD);
         }
 
         private static function registerPermission(String $key) {

@@ -125,6 +125,66 @@ CREATE TABLE IF NOT EXISTS `mc`.`ticket_messages` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `mc`.`announcements`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mc`.`announcements` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(64) CHARACTER SET 'utf8mb4' NOT NULL,
+  `message` VARCHAR(7500) CHARACTER SET 'utf8mb4' NOT NULL,
+  `date_create` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  `date_edit` DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
+  `userId` INT NOT NULL,
+  `visible` TINYINT NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  INDEX `fk_announcements_users1_idx` (`userId` ASC),
+  CONSTRAINT `fk_announcements_users1`
+    FOREIGN KEY (`userId`)
+    REFERENCES `mc`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mc`.`reactions`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mc`.`reactions` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `icon` VARCHAR(64) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mc`.`announcement_reactions`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mc`.`announcement_reactions` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `userId` INT NOT NULL,
+  `announcementId` INT NOT NULL,
+  `reactionsId` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_announcement_reactions_users1_idx` (`userId` ASC),
+  INDEX `fk_announcement_reactions_announcements1_idx` (`announcementId` ASC),
+  INDEX `fk_announcement_reactions_reactions1_idx` (`reactionsId` ASC),
+  CONSTRAINT `fk_announcement_reactions_users1`
+    FOREIGN KEY (`userId`)
+    REFERENCES `mc`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_announcement_reactions_announcements1`
+    FOREIGN KEY (`announcementId`)
+    REFERENCES `mc`.`announcements` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_announcement_reactions_reactions1`
+    FOREIGN KEY (`reactionsId`)
+    REFERENCES `mc`.`reactions` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

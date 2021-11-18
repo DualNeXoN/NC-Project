@@ -12,6 +12,9 @@
                     <a class="nav-link" href="./">Hlavná stránka</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="./?subpage=announcements">Oznamy</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="./?subpage=players">Hráči</a>
                 </li>
                 <?php require_once 'fragments/navbarTickets/navbarTickets.frag.php' ?>
