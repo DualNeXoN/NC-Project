@@ -8,7 +8,7 @@ namespace Models\Perms {
     use Models\User\User;
     use Models\User\UserQueries;
 
-    require_once './models/user.model.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/models/user.model.php';
 
     class PermsHandler {
 
@@ -44,7 +44,7 @@ namespace Models\Perms {
     class PermsQueries {
 
         public static function getAllUsersHavingExactPerm(String $key) {
-            require './includes/dbh.inc.php';
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
 
             $rankId = PermsQueries::getCurrentRankIdOfKey($key);
             $rankRow = UserQueries::getRankRowByRankId($rankId);
@@ -68,7 +68,7 @@ namespace Models\Perms {
         }
 
         public static function getCurrentRankIdOfKey(String $key) {
-            require './includes/dbh.inc.php';
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
 
             $sql = "SELECT * FROM " . PermsHandler::TABLE_PERMS . " WHERE keyName = ?";
             $stmt = $conn->prepare($sql);
@@ -87,7 +87,7 @@ namespace Models\Perms {
         }
 
         public static function hasAccess(int $userRankValue, int $currentRankId) {
-            require './includes/dbh.inc.php';
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
 
             $sql = "SELECT * FROM " . Rank::TABLE_RANK . " WHERE id = ?";
             $stmt = $conn->prepare($sql);
@@ -105,7 +105,7 @@ namespace Models\Perms {
         }
 
         public static function existsTable() {
-            require './includes/dbh.inc.php';
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
 
             $sql = "SHOW TABLES LIKE '" . PermsHandler::TABLE_PERMS . "'";
             $stmt = $conn->prepare($sql);
@@ -118,7 +118,7 @@ namespace Models\Perms {
         }
 
         public static function createTable() {
-            require './includes/dbh.inc.php';
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
 
             $sql = "CREATE TABLE `" . PermsHandler::TABLE_PERMS . "` (
                 `keyName` VARCHAR(64) NOT NULL, PRIMARY KEY (`keyName`(64)),
@@ -133,7 +133,7 @@ namespace Models\Perms {
         }
 
         public static function addDefaults() {
-            require './includes/dbh.inc.php';
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
 
             $sql = "INSERT INTO `" . PermsHandler::TABLE_PERMS . "` (`keyName`) VALUES";
 
@@ -149,7 +149,7 @@ namespace Models\Perms {
         }
 
         public static function resetPermsRankId(int $rankId) {
-            require './includes/dbh.inc.php';
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
 
             $sql = "UPDATE " . PermsHandler::TABLE_PERMS . " SET rankId=default(rankId) WHERE rankId=?";
             $stmt = $conn->prepare($sql);
@@ -167,6 +167,8 @@ namespace Models\Perms {
         const ADMINPANEL_RANKS_ACCESS = "adminpanel.ranks.access";
         const ADMINPANEL_RANKS_ADD = "adminpanel.ranks.add";
         const ADMINPANEL_SERVER_ACCESS = "adminpanel.server.access";
+        const ADMINPANEL_SERVER_CONSOLE_ACCESS = "adminpanel.server.console.access";
+        const ADMINPANEL_SERVER_ESM_ACCESS = "adminpanel.server.esm.access";
         const ADMINPANEL_TICKET_ACCESS = "adminpanel.ticket.access";
         const ADMINPANEL_TICKET_OPEN_ANY = "adminpanel.ticket.open.any";
         const ADMINPANEL_TICKET_ASSIGNEE_CHANGE = "adminpanel.ticket.assignee.change";
@@ -183,6 +185,8 @@ namespace Models\Perms {
             PCo::registerPermission(PCo::ADMINPANEL_RANKS_ACCESS);
             PCo::registerPermission(PCo::ADMINPANEL_RANKS_ADD);
             PCo::registerPermission(PCo::ADMINPANEL_SERVER_ACCESS);
+            PCo::registerPermission(PCo::ADMINPANEL_SERVER_CONSOLE_ACCESS);
+            PCo::registerPermission(PCo::ADMINPANEL_SERVER_ESM_ACCESS);
             PCo::registerPermission(PCo::ADMINPANEL_TICKET_ACCESS);
             PCo::registerPermission(PCo::ADMINPANEL_TICKET_OPEN_ANY);
             PCo::registerPermission(PCo::ADMINPANEL_TICKET_ASSIGNEE_CHANGE);

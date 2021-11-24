@@ -37,7 +37,7 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_USERS_ACCESS)) {
                     </thead>
                     <tbody>
                         <?php
-                        require './includes/dbh.inc.php';
+                        require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
                         $sql = "SELECT users.id AS id, users.username AS username, r.name AS rankname, r.color AS color, r.rank AS rankvalue
                                 FROM users
                                 INNER JOIN ranks r ON users.rankId = r.id

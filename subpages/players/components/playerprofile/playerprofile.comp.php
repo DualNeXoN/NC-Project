@@ -22,7 +22,7 @@
 
     require_once './utils/toast.util.php';
 
-    require './includes/dbh.inc.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
 
     $sql = "SELECT * FROM users WHERE username=?";
     $stmt = $conn->prepare($sql);

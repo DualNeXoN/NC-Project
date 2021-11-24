@@ -38,7 +38,7 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_RANKS_ACCESS)) {
                     </thead>
                     <tbody>
                         <?php
-                        require './includes/dbh.inc.php';
+                        require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
                         $sql = "SELECT * FROM ranks ORDER BY rank ASC";
                         $result = $conn->query($sql);
                         if (mysqli_num_rows($result) > 0) {

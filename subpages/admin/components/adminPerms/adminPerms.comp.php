@@ -34,7 +34,7 @@ if (!PermsHandler::hasPerms(PermsConstants::ADMINPANEL_PERMS_ACCESS)) {
                     </thead>
                     <tbody>
                         <?php
-                        require './includes/dbh.inc.php';
+                        require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
                         $sql = "SELECT
                                 perms.keyName AS keyName, perms.rankId AS rankId, r.name AS rankname
                                 FROM perms

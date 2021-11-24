@@ -30,7 +30,7 @@ use Models\Perms\PermsHandler;
             <?php }
             if (PermsHandler::hasPerms(PermsConstants::ADMINPANEL_SERVER_ACCESS)) { ?>
                 <div class="col">
-                    <a class="btn btn-primary full-width" href="">Administrácia servera</a>
+                    <a class="btn btn-primary full-width" href="./?subpage=admin&component=adminServer">Administrácia servera</a>
                 </div>
             <?php }
             if (PermsHandler::hasPerms(PermsConstants::ADMINPANEL_TICKET_ACCESS)) { ?>
