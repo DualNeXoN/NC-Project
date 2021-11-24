@@ -5,7 +5,7 @@ namespace MinecraftServerStatus;
 use MinecraftServerStatus\Packets\HandshakePacket;
 use MinecraftServerStatus\Packets\PingPacket;
 
-require $_SERVER['DOCUMENT_ROOT'] . './models/minecraft/packets/Packet.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/models/minecraft/packets/Packet.php';
 
 class MinecraftServerStatus {
 

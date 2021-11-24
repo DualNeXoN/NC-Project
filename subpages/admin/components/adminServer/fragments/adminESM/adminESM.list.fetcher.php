@@ -1,8 +1,8 @@
 <?php
 
-require $_SERVER['DOCUMENT_ROOT'] . './models/minecraft/MinecraftPing.model.php';
-require $_SERVER['DOCUMENT_ROOT'] . './models/minecraft/MinecraftPingException.model.php';
-require $_SERVER['DOCUMENT_ROOT'] . './models/playerESM.model.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/models/minecraft/MinecraftPing.model.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/models/minecraft/MinecraftPingException.model.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/models/playerESM.model.php';
 
 use xPaw\MinecraftPing;
 use xPaw\MinecraftPingException;
