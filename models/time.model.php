@@ -22,5 +22,10 @@ namespace Models\Time {
 
             return mysqli_fetch_assoc($result)['result'];
         }
+
+        public static function convertPlaytime($playtime) {
+            $playtime = round(($playtime / 1000 / 60 / 60), 2);
+            return $playtime . "h";
+        }
     }
 }

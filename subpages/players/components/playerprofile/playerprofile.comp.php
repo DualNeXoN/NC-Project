@@ -16,6 +16,7 @@
 
     <?php
 
+    use Models\Time\TimeConverter;
     use Utils\Toast\ToastHandler;
     use Models\User\User as User;
     use Models\User\UserQueries as Queries;
@@ -23,6 +24,7 @@
     require_once './utils/toast.util.php';
 
     require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/models/time.model.php';
 
     $sql = "SELECT * FROM users WHERE username=?";
     $stmt = $conn->prepare($sql);
@@ -69,7 +71,7 @@
         </div>
         <div class="row">
             <div class="col text-center align-self-center">
-                <span class="text-outline">Playtime: <?= $row['playtime'] ?></span>
+                <span class="text-outline">Playtime: <?= TimeConverter::convertPlaytime($row['playtime']) ?></span>
             </div>
         </div>
         <?php
