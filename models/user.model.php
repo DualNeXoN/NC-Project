@@ -327,5 +327,19 @@ namespace Models\User {
             $currentTime = time();
             return (($currentTime - $lastActivity) < (User::ONLINE_SECONDS + User::ONLINE_MINUTES * 60));
         }
+
+        public static function isOnlineOnServer(int $userId) {
+            require $_SERVER['DOCUMENT_ROOT'] . '/includes/dbh.inc.php';
+
+            $sql = "SELECT onlineServer FROM users WHERE id=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if (mysqli_num_rows($result) == 0) return 0;
+            $stmt->close();
+            $conn->close();
+            return mysqli_fetch_assoc($result)['onlineServer'] == 1;
+        }
     }
 }
