@@ -169,6 +169,7 @@ namespace Models\Perms {
         const ADMINPANEL_SERVER_ACCESS = "adminpanel.server.access";
         const ADMINPANEL_SERVER_CONSOLE_ACCESS = "adminpanel.server.console.access";
         const ADMINPANEL_SERVER_ESM_ACCESS = "adminpanel.server.esm.access";
+        const ADMINPANEL_SETTINGS_ACCESS = "adminpanel.settings.access";
         const ADMINPANEL_TICKET_ACCESS = "adminpanel.ticket.access";
         const ADMINPANEL_TICKET_OPEN_ANY = "adminpanel.ticket.open.any";
         const ADMINPANEL_TICKET_ASSIGNEE_CHANGE = "adminpanel.ticket.assignee.change";
@@ -187,6 +188,7 @@ namespace Models\Perms {
             PCo::registerPermission(PCo::ADMINPANEL_SERVER_ACCESS);
             PCo::registerPermission(PCo::ADMINPANEL_SERVER_CONSOLE_ACCESS);
             PCo::registerPermission(PCo::ADMINPANEL_SERVER_ESM_ACCESS);
+            PCo::registerPermission(PCo::ADMINPANEL_SETTINGS_ACCESS);
             PCo::registerPermission(PCo::ADMINPANEL_TICKET_ACCESS);
             PCo::registerPermission(PCo::ADMINPANEL_TICKET_OPEN_ANY);
             PCo::registerPermission(PCo::ADMINPANEL_TICKET_ASSIGNEE_CHANGE);

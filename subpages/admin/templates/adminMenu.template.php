@@ -42,6 +42,11 @@ use Models\Perms\PermsHandler;
                 <div class="col">
                     <a class="btn btn-primary full-width" href="./?subpage=admin&component=adminPerms">Práva</a>
                 </div>
+            <?php }
+            if (PermsHandler::hasPerms(PermsConstants::ADMINPANEL_SETTINGS_ACCESS)) { ?>
+                <div class="col">
+                    <a class="btn btn-primary full-width" href="./?subpage=admin&component=adminSettings">Administrácia globálnych premenných</a>
+                </div>
             <?php } ?>
 
         </div>
