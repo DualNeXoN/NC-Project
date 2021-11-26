@@ -1,10 +1,13 @@
 <?php
 
 use MinecraftServerStatus\MinecraftServerStatus;
+use Settings\Settings;
+use Settings\SettingsConstants as SCo;
 
 require $_SERVER['DOCUMENT_ROOT'] . '/models/minecraft/MinecraftServerStatus.model.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/models/settings.model.php';
 
-$response = MinecraftServerStatus::query('dev.dualnexon.sk', 25565);
+$response = MinecraftServerStatus::query(Settings::getExactSetting(SCo::SERVER_IP), intval(Settings::getExactSetting(SCo::SERVER_PORT)));
 
 echo '<div class="col-10 col-md-6 col-xl-4 text-center" style="background-color: #333333; border: 1px solid grey; padding: 8px">';
 

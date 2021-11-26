@@ -3,14 +3,17 @@
 require $_SERVER['DOCUMENT_ROOT'] . '/models/minecraft/MinecraftPing.model.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/models/minecraft/MinecraftPingException.model.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/models/playerESM.model.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/models/settings.model.php';
 
 use xPaw\MinecraftPing;
 use xPaw\MinecraftPingException;
 use Models\PlayerESM\PlayerESM;
+use Settings\Settings;
+use Settings\SettingsConstants as SCo;
 
 $query = null;
 try {
-    $query = new MinecraftPing('dev.dualnexon.sk', 25565);
+    $query = new MinecraftPing(Settings::getExactSetting(SCo::SERVER_IP), intval(Settings::getExactSetting(SCo::SERVER_PORT)));
 
     $q = $query->Query();
     if (isset($q['players']['sample'])) {

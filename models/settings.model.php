@@ -74,6 +74,9 @@ namespace Settings {
     class SettingsConstants {
 
         const RCON_PWD = "rcon.pwd";
+        const RCON_PORT = "rcon.port";
+        const SERVER_IP = "server.ip";
+        const SERVER_PORT = "server.port";
 
         public static $map = array();
 
@@ -81,6 +84,9 @@ namespace Settings {
             SCo::$map = array();
 
             SCo::registerSetting(SCo::RCON_PWD);
+            SCo::registerSetting(SCo::RCON_PORT);
+            SCo::registerSetting(SCo::SERVER_IP);
+            SCo::registerSetting(SCo::SERVER_PORT);
         }
 
         private static function registerSetting(String $key) {

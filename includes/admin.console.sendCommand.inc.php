@@ -15,8 +15,8 @@ if (isset($_SESSION['id']) && PermsHandler::hasPerms(PermsConstants::ADMINPANEL_
     require './../models/minecraft/Rcon.model.php';
     $command = $_POST['cmd'];
 
-    $host = 'dev.dualnexon.sk';
-    $port = 25575;
+    $host = Settings::getExactSetting(SCo::SERVER_IP);
+    $port = Settings::getExactSetting(SCo::RCON_PORT);
     $password = Settings::getExactSetting(SCo::RCON_PWD);
     $timeout = 5;
 
